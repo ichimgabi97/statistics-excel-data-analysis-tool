@@ -2,6 +2,7 @@ Aplicația de Analiză și Notificare Plăți
 Această aplicație web simplă permite utilizatorilor să încarce fișiere CSV cu date de plată, să vizualizeze statistici relevante într-un mod intuitiv și să genereze remindere personalizate pentru utilizatorii cu plăți restante.
 
 🚀 Funcționalități Principale
+
 Aplicația este împărțită în două părți principale: un backend Python cu Flask și un frontend React cu TypeScript.
 
 1. Încărcare Fișier CSV (cu Drag & Drop)
@@ -52,7 +53,7 @@ CSS Modules: Pentru a asigura stiluri izolate și a evita conflictele CSS.
 
 Fetch API: Pentru a comunica cu backend-ul.
 
-💡 Utilizare
+💡 Utilizare:
 
 Încărcă un Fișier CSV:
 
@@ -92,7 +93,7 @@ Apasă butonul "Trimite Remindere Plăți".
 
 Serverul va genera fișiere text personalizate în directorul backend/reminders/ pentru fiecare persoană care are o plată restantă (parțială sau deloc).
 
-🚀 Îmbunătățiri Viitoare
+🚀 Îmbunătățiri Viitoare:
 
 Bază de Date: Stocarea datelor în PostgreSQL, SQLite sau MongoDB pentru persistență și scalabilitate, în loc de fișiere CSV temporare.
 
