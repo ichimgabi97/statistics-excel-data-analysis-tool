@@ -53,6 +53,7 @@ CSS Modules: Pentru a asigura stiluri izolate și a evita conflictele CSS.
 Fetch API: Pentru a comunica cu backend-ul.
 
 💡 Utilizare
+
 Încărcă un Fișier CSV:
 
 Pe interfața aplicației, trage și plasează un fișier CSV în zona dedicată sau apasă "Selectează din calculator".
@@ -91,7 +92,8 @@ Apasă butonul "Trimite Remindere Plăți".
 
 Serverul va genera fișiere text personalizate în directorul backend/reminders/ pentru fiecare persoană care are o plată restantă (parțială sau deloc).
 
-🚀 Îmbunătățiri Viitoare (Idei)
+🚀 Îmbunătățiri Viitoare
+
 Bază de Date: Stocarea datelor în PostgreSQL, SQLite sau MongoDB pentru persistență și scalabilitate, în loc de fișiere CSV temporare.
 
 Autentificare: Implementarea unui sistem de autentificare pentru utilizatori.
