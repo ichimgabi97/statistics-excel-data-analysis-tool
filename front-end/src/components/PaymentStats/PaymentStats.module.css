@@ -1,0 +1,130 @@
+/* src/components/PaymentStats.module.css */
+
+.statsContainer {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
+  font-family: Arial, sans-serif;
+  border: 1px solid #e0e0e0;
+}
+
+.title {
+  color: #333;
+  font-size: 2em;
+  margin-bottom: 0;
+  text-align: center;
+}
+
+.loadingMessage,
+.errorMessage,
+.noDataMessage {
+  font-size: 1.1em;
+  color: #666;
+  text-align: center;
+  padding: 15px;
+  border-radius: 8px;
+  background-color: #f0f0f0;
+  width: 90%;
+}
+
+.errorMessage {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.progressBarWrapper {
+  position: relative;
+  width: 140px; /* Raza * 2 + strokeWidth */
+  height: 140px; /* la fel */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.circularProgressStack {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Stiluri pentru SVG - se aplică direct elementului <svg> din PaymentStats.tsx */
+.progressBarSvg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* `transform: rotate(-90deg)` este acum pe elementul SVG direct în JSX */
+}
+
+/* Stiluri pentru elementele <circle> din SVG */
+/* Se aplică tuturor cercurilor, dar proprietăți precum 'stroke' sunt suprascrise inline */
+.progressBarBackground,
+.progressBarProgress {
+  fill: none;
+  stroke-linecap: butt;
+}
+
+.progressBarBackground {
+  stroke: #e0e0e0; /* Culoarea cercului de fundal */
+}
+
+.progressBarProgress {
+  transition: stroke-dashoffset 0.5s ease-out;
+}
+
+/* Centrarea perfectă a textului în cerc */
+.totalPeopleDisplay,
+.totalPeopleLabel {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  color: #333;
+}
+
+.totalPeopleDisplay {
+  font-size: 1.8em;
+  font-weight: bold;
+  top: 50%;
+  transform: translate(-50%, -65%);
+  line-height: 1;
+}
+
+.totalPeopleLabel {
+  font-size: 0.9em;
+  color: #666;
+  top: 50%;
+  transform: translate(-50%, 15%);
+}
+
+.legend {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 90%;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  font-size: 1.1em;
+  color: #555;
+}
+
+.legendColor {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  margin-right: 10px;
+  border: 1px solid #ddd;
+}

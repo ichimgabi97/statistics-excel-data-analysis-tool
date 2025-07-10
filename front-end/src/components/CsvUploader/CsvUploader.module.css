@@ -1,0 +1,126 @@
+/* CsvUploader.module.css */
+
+.container {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  width: 380px; /* Lățime puțin mărită pentru un aspect mai plăcut */
+  height: 280px; /* Înălțime fixă pentru a fi mai ușor de gestionat ca zonă de drop */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around; /* Distribuie elementele uniform pe verticală */
+  font-family: Arial, sans-serif;
+  border: 2px dashed #a0a0a0; /* Bordură punctată implicită */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease,
+    background-color 0.3s ease;
+  position: relative; /* Necesar pentru centrare textului */
+}
+
+.dragging {
+  border-color: #007bff;
+  background-color: #e9f5ff; /* Schimbă fundalul la dragging */
+  box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.4); /* Umbră mai pronunțată */
+}
+
+.title {
+  color: #333;
+  font-size: 1.8em;
+  margin-bottom: 0; /* Ajustat margin */
+  text-align: center;
+}
+
+/* Stil pentru textul "Trage și plasează" */
+.dragDropText {
+  color: #666;
+  font-size: 1.1em;
+  text-align: center;
+  margin: 10px 0; /* Spațiu */
+}
+
+/* Stil pentru numele fișierului selectat */
+.selectedFileName {
+  color: #333;
+  font-size: 1.1em;
+  text-align: center;
+  margin: 10px 0;
+  max-width: 90%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.fileInput {
+  display: none; /* Ascunde input-ul real */
+}
+
+.browseButton {
+  background-color: #007bff; /* Buton albastru pentru selecție */
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  width: auto; /* Lățime adaptivă */
+  margin-top: 10px; /* Spațiu față de textul de deasupra */
+}
+
+.browseButton:hover {
+  background-color: #0056b3;
+  transform: translateY(-1px);
+}
+
+.browseButton:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.uploadButton {
+  background-color: #28a745; /* Buton verde pentru upload */
+  color: white;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.1em;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  width: 90%;
+  margin-top: 20px; /* Spațiu deasupra butonului de upload */
+}
+
+.uploadButton:hover:not(:disabled) {
+  background-color: #218838;
+  transform: translateY(-2px);
+}
+
+.uploadButton:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.message {
+  margin-top: 15px;
+  padding: 10px;
+  border-radius: 6px;
+  width: 90%;
+  text-align: center;
+  font-size: 0.95em;
+  font-weight: bold;
+}
+
+.successMessage {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.errorMessage {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
