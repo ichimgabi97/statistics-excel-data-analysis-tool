@@ -1,40 +1,36 @@
-import React, { useState } from "react";
-import "./App.css";
-import Test from "./components/test/Test";
+import React, { useEffect, useState } from "react";
+import styles from "./App.module.css";
+
 import CsvUploader from "./components/CsvUploader/CsvUploader";
 import PaymentStats from "./components/PaymentStats/PaymentStats";
 
 const App: React.FC = () => {
   const [dataUpdated, setDataUpdated] = useState(false);
 
-  // Funcție pasată către FileUploadComponent pentru a o apela după upload de succes
   const handleFileUploadSuccess = () => {
-    setDataUpdated((prev) => !prev); // Togglează state-ul pentru a declanșa reîncărcarea
+    setDataUpdated((prev) => !prev);
   };
 
+  useEffect(() => {
+    fetch("http://localhost:5000/test")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error("A apărut o eroare la fetch:", error);
+      });
+  }, []);
+
   return (
-    <>
-      <h1>Hello from React</h1>
-      <Test />
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: "50px",
-          padding: "50px",
-          minHeight: "100vh",
-          backgroundColor: "#f0f2f5",
-        }}
-      >
+    <div className={styles.appContainer}>
+      <h1 className={styles.mainTitle}>Sistem de Gestiune și Analiză Plăți</h1>
+      <div className={styles.contentWrapper}>
         <CsvUploader onUploadSuccess={handleFileUploadSuccess} />
-        {/* O linie separatoare pentru claritate */}
-        <hr
-          style={{ width: "80%", border: "none", borderTop: "1px solid #ccc" }}
-        />
+        <hr className={styles.separator} />
         <PaymentStats refreshTrigger={dataUpdated} />
       </div>
-    </>
+    </div>
   );
 };
 

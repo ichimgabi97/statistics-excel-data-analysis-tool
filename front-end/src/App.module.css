@@ -1,0 +1,32 @@
+.appContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 50px;
+  min-height: 100vh;
+  background-color: #f0f2f5;
+  font-family: Arial, sans-serif;
+}
+
+.mainTitle {
+  color: #333;
+  font-size: 2.5em;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.contentWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 50px;
+  width: 100%;
+  max-width: 800px;
+}
+
+.separator {
+  width: 80%;
+  border: none;
+  border-top: 1px solid #ccc;
+  margin: 20px 0;
+}

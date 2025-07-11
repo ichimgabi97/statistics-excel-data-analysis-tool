@@ -1,5 +1,3 @@
-/* src/components/PaymentStats.module.css */
-
 .statsContainer {
   background-color: #ffffff;
   padding: 30px;
@@ -41,8 +39,8 @@
 
 .progressBarWrapper {
   position: relative;
-  width: 140px; /* Raza * 2 + strokeWidth */
-  height: 140px; /* la fel */
+  width: 140px;
+  height: 140px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -57,16 +55,12 @@
   align-items: center;
 }
 
-/* Stiluri pentru SVG - se aplică direct elementului <svg> din PaymentStats.tsx */
 .progressBarSvg {
   position: absolute;
   top: 0;
   left: 0;
-  /* `transform: rotate(-90deg)` este acum pe elementul SVG direct în JSX */
 }
 
-/* Stiluri pentru elementele <circle> din SVG */
-/* Se aplică tuturor cercurilor, dar proprietăți precum 'stroke' sunt suprascrise inline */
 .progressBarBackground,
 .progressBarProgress {
   fill: none;
@@ -74,14 +68,13 @@
 }
 
 .progressBarBackground {
-  stroke: #e0e0e0; /* Culoarea cercului de fundal */
+  stroke: #e0e0e0;
 }
 
 .progressBarProgress {
   transition: stroke-dashoffset 0.5s ease-out;
 }
 
-/* Centrarea perfectă a textului în cerc */
 .totalPeopleDisplay,
 .totalPeopleLabel {
   position: absolute;

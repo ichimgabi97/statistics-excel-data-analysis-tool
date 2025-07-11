@@ -1,7 +1,6 @@
-// src/components/PaymentStats.tsx
 import React, { useEffect, useState, useCallback } from "react";
 import styles from "./PaymentStats.module.css";
-import ReminderButton from "./ReminderButton/ReminderButton"; // NOU: Importă noua componentă
+import ReminderButton from "./ReminderButton/ReminderButton";
 
 interface PaymentStatsData {
   total_people: number;
@@ -20,9 +19,6 @@ const PaymentStats: React.FC<PaymentStatsProps> = ({ refreshTrigger }) => {
   const [stats, setStats] = useState<PaymentStatsData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  // NOU: Aceste state-uri nu mai sunt necesare aici, ele se mută în ReminderButton
-  // const [reminderMessage, setReminderMessage] = useState<string | null>(null);
-  // const [sendingReminders, setSendingReminders] = useState<boolean>(false);
 
   const fetchStats = useCallback(async () => {
     try {
@@ -54,8 +50,6 @@ const PaymentStats: React.FC<PaymentStatsProps> = ({ refreshTrigger }) => {
     fetchStats();
   }, [fetchStats, refreshTrigger]);
 
-  // NOU: Funcție de callback pentru a gestiona mesajele de la ReminderButton
-  // Aici poți face ceva cu mesajul (ex: afișare într-o alertă globală sau logger)
   const handleRemindersSent = (message: string, isError: boolean) => {
     console.log(
       "Mesaj de la ReminderButton:",
@@ -63,8 +57,6 @@ const PaymentStats: React.FC<PaymentStatsProps> = ({ refreshTrigger }) => {
       "Este eroare:",
       isError
     );
-    // Dacă vrei să afișezi mesajul în PaymentStats, ai putea adăuga un state aici.
-    // Dar în acest exemplu, mesajul este afișat direct în ReminderButton.
   };
 
   const CIRCLE_RADIUS = 60;
@@ -195,10 +187,8 @@ const PaymentStats: React.FC<PaymentStatsProps> = ({ refreshTrigger }) => {
         </div>
       </div>
 
-      {/* NOU: Includem componenta ReminderButton */}
       <ReminderButton
         onRemindersSent={handleRemindersSent}
-        // Dezactivează butonul dacă nu există date sau totalul persoanelor este 0
         isDisabled={!stats || stats.total_people === 0}
       />
     </div>

@@ -1,11 +1,8 @@
-// src/components/ReminderButton.tsx
 import React, { useState } from "react";
-import styles from "../PaymentStats.module.css"; // Reutilizăm stilurile existente
+import styles from "../PaymentStats.module.css";
 
 interface ReminderButtonProps {
-  // O funcție de callback opțională, dacă componenta părinte vrea să știe când s-a terminat trimiterea
   onRemindersSent?: (message: string, isError: boolean) => void;
-  // Prop pentru a dezactiva butonul dacă nu sunt date (din PaymentStats)
   isDisabled?: boolean;
 }
 
@@ -18,7 +15,7 @@ const ReminderButton: React.FC<ReminderButtonProps> = ({
 
   const handleSendReminders = async () => {
     setSendingReminders(true);
-    setReminderMessage(null); // Resetează mesajul la fiecare trimitere
+    setReminderMessage(null);
 
     try {
       const response = await fetch("http://localhost:5000/send-reminders", {
@@ -34,9 +31,9 @@ const ReminderButton: React.FC<ReminderButtonProps> = ({
       const message =
         data.message || data.error || "A apărut o eroare necunoscută.";
 
-      setReminderMessage(message); // Setează mesajul pentru afișare locală
+      setReminderMessage(message);
       if (onRemindersSent) {
-        onRemindersSent(message, isError); // Anunță componenta părinte
+        onRemindersSent(message, isError);
       }
     } catch (err) {
       console.error("Eroare la trimiterea reminderelor:", err);
@@ -54,7 +51,6 @@ const ReminderButton: React.FC<ReminderButtonProps> = ({
     <>
       <button
         onClick={handleSendReminders}
-        // Butonul este dezactivat dacă se trimit deja remindere sau dacă isDisabled este true (fără date)
         disabled={sendingReminders || isDisabled}
         className={styles.sendRemindersButton}
       >

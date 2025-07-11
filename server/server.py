@@ -1,22 +1,17 @@
-# app.py
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import pandas as pd
 import os
-import re # Importă modulul 're' pentru expresii regulate
+import re
 
 app = Flask(__name__)
 
-# Configurare CORS pentru a permite cereri de la aplicația React (presupunând portul 3000)
-# În producție, este esențial să limitezi originile la cele specifice aplicației tale.
 CORS(app, origins=["http://localhost:3000"]) 
 
-# Definirea folderelor pentru fișiere
 UPLOAD_FOLDER = 'uploads'
 REMINDERS_FOLDER = 'reminders'
 CSV_FILE_PATH = os.path.join(UPLOAD_FOLDER, 'payments.csv')
 
-# Asigură-te că folderele există la pornirea aplicației
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(REMINDERS_FOLDER, exist_ok=True)
 
@@ -46,7 +41,7 @@ def upload_file():
     if file.filename == '':
         return jsonify({'error': 'Niciun fișier selectat'}), 400
     
-    if file and file.filename.lower().endswith('.csv'): # Asigură-te că este un fișier CSV
+    if file and file.filename.lower().endswith('.csv'):
         try:
             file.save(CSV_FILE_PATH)
             return jsonify({'message': 'Fișierul a fost încărcat cu succes!', 'filepath': CSV_FILE_PATH}), 200
@@ -61,7 +56,6 @@ def get_payment_stats():
     Calculează și returnează statisticile de plată din fișierul CSV.
     """
     if not os.path.exists(CSV_FILE_PATH):
-        # Returnează valori zero dacă fișierul nu există, pentru a evita erori în frontend
         return jsonify({
             'error': 'Fișierul CSV nu a fost găsit. Vă rugăm să încărcați unul.',
             'total_people': 0, 'paid_full': 0, 'paid_partial': 0, 'not_paid': 0
@@ -70,9 +64,7 @@ def get_payment_stats():
     try:
         df = pd.read_csv(CSV_FILE_PATH)
 
-        # Verifică existența coloanelor esențiale
-        # Numele coloanelor trebuie să se potrivească exact cu cele din CSV-ul tău
-        required_columns = ['suma platita', 'suma de plata'] # Numele coloanelor din CSV-ul tău
+        required_columns = ['suma platita', 'suma de plata']
         if not all(col in df.columns for col in required_columns):
             missing_cols = [col for col in required_columns if col not in df.columns]
             return jsonify({
@@ -80,18 +72,16 @@ def get_payment_stats():
                 'total_people': 0, 'paid_full': 0, 'paid_partial': 0, 'not_paid': 0
             }), 400
 
-        # Curățare și conversie la tip numeric, înlocuind non-numerice cu 0
         df['suma platita'] = pd.to_numeric(df['suma platita'], errors='coerce').fillna(0)
         df['suma de plata'] = pd.to_numeric(df['suma de plata'], errors='coerce').fillna(0)
 
-        # Filtrează rândurile unde 'suma de plata' este 0 pentru a evita împărțirea la zero sau erori logice
         df = df[df['suma de plata'] > 0]
         
         total_people = len(df)
         
         paid_full = df[df['suma platita'] >= df['suma de plata']].shape[0]
         paid_partial = df[(df['suma platita'] > 0) & (df['suma platita'] < df['suma de plata'])].shape[0]
-        not_paid = df[df['suma platita'] <= 0].shape[0] # Considerăm 0 ca neplătit
+        not_paid = df[df['suma platita'] <= 0].shape[0]
 
         return jsonify({
             'total_people': total_people,
@@ -116,8 +106,6 @@ def send_reminders():
     try:
         df = pd.read_csv(CSV_FILE_PATH)
 
-        # Verifică existența coloanelor esențiale pentru remindere
-        # Numele coloanelor trebuie să se potrivească exact cu cele din CSV-ul tău
         required_cols_reminders = ['suma platita', 'suma de plata', 'nume', 'prenume', 'email'] 
         
         if not all(col in df.columns for col in required_cols_reminders):
@@ -130,7 +118,6 @@ def send_reminders():
         reminders_generated_count = 0
         reminders_details = []
 
-        # Curăță folderul de remindere înainte de a genera altele noi
         for filename in os.listdir(REMINDERS_FOLDER):
             file_path = os.path.join(REMINDERS_FOLDER, filename)
             try:
@@ -140,17 +127,15 @@ def send_reminders():
                 print(f"Eroare la ștergerea fișierului {file_path}: {e}")
 
         for index, row in df.iterrows():
-            # Asigură-te că folosești numele corecte ale coloanelor din CSV-ul tău
             nume = str(row['nume']).strip() if pd.notna(row['nume']) else ''
             prenume = str(row['prenume']).strip() if pd.notna(row['prenume']) else ''
             full_name = f"{nume} {prenume}".strip() if nume or prenume else 'Utilizator necunoscut'
             
-            email = str(row['email']).strip() if pd.notna(row['email']) else '' # Modificat de la 'adresa de email' la 'email'
+            email = str(row['email']).strip() if pd.notna(row['email']) else ''
             
             paid_amount = row['suma platita']
             total_amount = row['suma de plata']
 
-            # Ignoră rândurile fără o adresă de email validă
             if not email or not re.match(r"[^@]+@[^@]+\.[^@]+", email):
                 reminders_details.append({'name': full_name, 'email': email, 'status': 'Adresă email invalidă/lipsă, reminder sărit.'})
                 continue
@@ -158,9 +143,8 @@ def send_reminders():
             remaining_amount = total_amount - paid_amount
             message = ""
 
-            if remaining_amount > 0.01: # Folosim o toleranță mică pentru comparații cu float
+            if remaining_amount > 0.01:
                 if paid_amount > 0:
-                    # Plata parțială
                     message = (
                         f"Bună ziua, {full_name},\n\n"
                         f"Dorim să vă reamintim că mai aveți de achitat suma de {remaining_amount:.2f} RON din totalul de {total_amount:.2f} RON.\n"
@@ -170,26 +154,20 @@ def send_reminders():
                         "Echipa de Administrare"
                     )
                 else:
-                    # Nu a făcut nicio plată
                     message = (
                         f"Stimate/Stimată {full_name},\n\n"
                         f"Dorim să vă informăm că nu am înregistrat nicio plată din partea dumneavoastră pentru suma de {total_amount:.2f} RON.\n"
-                        "Vă rugăm să efectuați plata integrală sau o plată parțială cât mai curând posibil pentru a evita neplăcerile.\n\n"
+                        "Vă rugăm să efectuați plata integrală sau o plată parțială cât mai curând posibil pentru a evita sistarea serviciilor.\n\n"
                         "Vă mulțumim pentru înțelegere!\n"
                         "Cu respect,\n"
                         "Echipa de Administrare"
                     )
             
-            if message: # Scrie fișierul doar dacă există un mesaj de trimis
-                # Curăță numele pentru a fi sigur în numele de fișier
-                # Înlocuiește caracterele non-alfanumerice cu underscore
+            if message:
                 file_name_safe = re.sub(r'[^a-zA-Z0-9_]', '', full_name.replace(" ", "_"))
-                # Limitează lungimea pentru a evita nume de fișiere prea lungi
                 file_name_safe = file_name_safe[:50] 
-                # Adaugă un timestamp pentru unicitate
                 timestamp = pd.Timestamp.now().strftime("%Y%m%d%H%M%S")
                 
-                # Folosim adresa de email pentru unicitate în numele fișierului
                 email_safe = email.split('@')[0]
                 reminder_filepath = os.path.join(REMINDERS_FOLDER, f"reminder_{file_name_safe}_{email_safe}_{timestamp}.txt")
 
@@ -211,7 +189,5 @@ def send_reminders():
         return jsonify({'error': f'Eroare la generarea reminderelor: {str(e)}'}), 500
 
 if __name__ == '__main__':
-    # Rulează aplicația Flask. 
-    # `debug=True` oferă mesaje de eroare detaliate și reîncărcare automată a serverului la modificările de cod.
-    # Nu folosi `debug=True` în producție!
+
     app.run(debug=True, port=5000)

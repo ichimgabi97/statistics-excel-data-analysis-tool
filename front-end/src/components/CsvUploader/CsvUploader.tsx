@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react"; // Adăugat useRef
+import React, { useState, useRef, useEffect } from "react";
 import styles from "./CsvUploader.module.css";
 interface CsvUploaderProps {
   onUploadSuccess: () => void;
@@ -10,7 +10,6 @@ const CsvUploader: React.FC<CsvUploaderProps> = ({ onUploadSuccess }) => {
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [isTimerActive, setIsTimerActive] = useState<boolean>(false);
 
-  // Ref pentru a accesa input-ul de tip file
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,8 +46,7 @@ const CsvUploader: React.FC<CsvUploaderProps> = ({ onUploadSuccess }) => {
           `Succes: ${data.message} (Rânduri: ${data.rows}, Coloane: ${data.columns})`
         );
         console.log("Răspuns server:", data);
-        setSelectedFile(null); // Resetează fișierul selectat
-        // Resetează input-ul de tip file pentru a permite selectarea aceluiași fișier din nou
+        setSelectedFile(null);
         if (fileInputRef.current) {
           fileInputRef.current.value = "";
         }
@@ -70,26 +68,24 @@ const CsvUploader: React.FC<CsvUploaderProps> = ({ onUploadSuccess }) => {
   };
 
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault(); // Permite drop-ul
-    setIsDragging(true); // Activează stilul de dragging
+    event.preventDefault();
+    setIsDragging(true);
   };
 
   const handleDragLeave = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
-    setIsDragging(false); // Dezactivează stilul de dragging
+    setIsDragging(false);
   };
 
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
-    setIsDragging(false); // Dezactivează stilul de dragging
+    setIsDragging(false);
 
     if (event.dataTransfer.files && event.dataTransfer.files.length > 0) {
       const droppedFile = event.dataTransfer.files[0];
       if (droppedFile.name.toLowerCase().endsWith(".csv")) {
-        // Verificare case-insensitive
         setSelectedFile(droppedFile);
         setUploadMessage("");
-        // Resetează input-ul de tip file dacă s-a făcut drop, pentru a evita confuzia
         if (fileInputRef.current) {
           fileInputRef.current.value = "";
         }
@@ -101,7 +97,6 @@ const CsvUploader: React.FC<CsvUploaderProps> = ({ onUploadSuccess }) => {
     }
   };
 
-  // Funcție pentru a deschide fereastra de selecție fișier când se apasă butonul "Browse"
   const handleBrowseClick = () => {
     fileInputRef.current?.click();
   };
@@ -122,7 +117,6 @@ const CsvUploader: React.FC<CsvUploaderProps> = ({ onUploadSuccess }) => {
     >
       <h2 className={styles.title}>Încărcă Fișier CSV</h2>
 
-      {/* Mesajul central pentru zona de drag and drop */}
       {!selectedFile ? (
         <p className={styles.dragDropText}>
           Trage și plasează un fișier CSV aici
@@ -133,22 +127,19 @@ const CsvUploader: React.FC<CsvUploaderProps> = ({ onUploadSuccess }) => {
         </p>
       )}
 
-      {/* Inputul de tip file este ascuns, dar conectat la ref și la label */}
       <input
         type="file"
         id="csvFile"
         accept=".csv"
         onChange={handleFileChange}
         className={styles.fileInput}
-        ref={fileInputRef} // Conectează ref-ul
+        ref={fileInputRef}
       />
 
-      {/* Butonul pentru a deschide selectorul de fișiere */}
       <button onClick={handleBrowseClick} className={styles.browseButton}>
         Selectează din calculator
       </button>
 
-      {/* Butonul de încărcare efectivă */}
       <button
         onClick={handleUpload}
         disabled={!selectedFile || isUploading}
